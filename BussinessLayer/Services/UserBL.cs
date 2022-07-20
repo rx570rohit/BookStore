@@ -21,5 +21,10 @@ namespace BussinessLayer.Services
         {
            return await this.userRL.AddUser(userLoginModel);
         }
+
+        public string LogInUser(string Email, string Password)
+        {
+            return this.userRL.LogInUser(Email,Password);
+        }
     }
 }

@@ -9,5 +9,8 @@ namespace BussinessLayer.Interfaces
     public interface IUserBL
     {
         Task<userPostModel> AddUser(userPostModel userPostModel);
+
+        public string LogInUser(string Email, string Password);
+
     }
 }

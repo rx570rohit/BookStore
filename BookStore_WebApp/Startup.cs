@@ -41,6 +41,9 @@ namespace BookStore_WebApp
                sp.GetRequiredService<IOptions<DBSetting>>().Value);
             //services.AddSingleton<IDBSetting>();
 
+            services.AddTransient<IbookstoreContext, bookstoreContext>();
+
+
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
             services.AddControllers();

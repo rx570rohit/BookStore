@@ -10,5 +10,7 @@ namespace RepositoryLayer.Interfaces
     {
     public Task<userPostModel> AddUser(userPostModel userPostModel);
 
+    public string LogInUser(string Email, string Password); 
+
     }
 }
