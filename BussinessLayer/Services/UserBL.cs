@@ -22,9 +22,20 @@ namespace BussinessLayer.Services
            return await this.userRL.AddUser(userLoginModel);
         }
 
+        public bool ForgotPassword(string email)
+        {
+            return this.userRL.ForgotPassword(email);
+        }
+
         public string LogInUser(string Email, string Password)
         {
             return this.userRL.LogInUser(Email,Password);
+        }
+
+        public bool ResetPassword(string email, UserPasswordModel userPasswordModel)
+        {
+            return this.userRL.ResetPassword( email, userPasswordModel);
+
         }
     }
 }

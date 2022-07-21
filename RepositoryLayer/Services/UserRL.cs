@@ -13,6 +13,7 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace RepositoryLayer.Services
 {
@@ -23,7 +24,6 @@ namespace RepositoryLayer.Services
         IbookstoreContext context;
 
         private readonly IConfiguration Configuration;
-        IConfiguration configuration;
 
         private readonly string _secret;
 
@@ -104,53 +104,100 @@ namespace RepositoryLayer.Services
                 }
                
         }
-            
-        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public string GetJWTToken(string emailID)
+        public bool ForgotPassword(string email)
         {
-            if (emailID == null)
+
+            try
             {
-                return null;
-            }
-            // generate token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenKey = Encoding.ASCII.GetBytes("THIS_IS_MY_KEY_TO_GENERATE_TOKEN");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
+                var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == email).FirstOrDefault();
+                if (user == null)
                 {
-                    new Claim("emailID", emailID),
+                    return false;
+                }
+                else
+                {
+                    MessageQueue queue;
 
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                    if (MessageQueue.Exists(@".\Private$\BookStore"))
+                    {
+                        queue = new MessageQueue(@".\Private$\BookStore");
+                    }
+                    else
+                    {
+                        queue = MessageQueue.Create(@".\Private$\BookStore");
+                    }
 
-                SigningCredentials =
-                               new SigningCredentials(
-                    new SymmetricSecurityKey(tokenKey),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+                    Message MyMessage = new Message();
+                    MyMessage.Formatter = new BinaryMessageFormatter();
+                    MyMessage.Body = GenerateJwtToken(email, user.UserId);
+                    MyMessage.Label = "Forget Password Email";
+                    queue.Send(MyMessage);
+
+                    Message msg = queue.Receive();
+                    msg.Formatter = new BinaryMessageFormatter();
+                    EmailServices.SendEmail(email, msg.Body.ToString());
+                    queue.ReceiveCompleted += new ReceiveCompletedEventHandler(msmqQueue_ReceiveCompleted);
+                    queue.BeginReceive();
+                    queue.Close();
+                    return true;
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        public string GenerateJwtToken(string email, string userId)
+        public bool ResetPassword(string email, UserPasswordModel userPasswordModel)
+        {
+            try
+            {
+                var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == email).FirstOrDefault();
+
+                if (user == null)
+                {
+                    return false;
+                }
+                if (userPasswordModel.Password == userPasswordModel.ConfirmPassword)
+                {
+                    user.Password = PwdEncryptDecryptService.EncryptPassword(userPasswordModel.Password);
+                    //var filter = Builders<BsonDocument>.Filter.Eq("UserId", user.UserId);
+                    //var update  = Builders<BsonDocument>.Update.Set("Password", user.Password);
+                    context.mongoUserCollections.UpdateOneAsync(x => x.EmailId == email,
+                        Builders<User>.Update.Set(x => x.Password, user.Password));
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private void msmqQueue_ReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
+        {
+            try
+            {
+                MessageQueue queue = (MessageQueue)sender;
+                Message msg = queue.EndReceive(e.AsyncResult);
+                EmailServices.SendEmail(e.Message.ToString(), GenerateToken(e.Message.ToString()));
+                queue.BeginReceive();
+            }
+            catch (MessageQueueException ex)
+            {
+                if (ex.MessageQueueErrorCode ==
+                   MessageQueueErrorCode.AccessDenied)
+                {
+                    Console.WriteLine("Access is denied. " +
+                        "Queue might be a system queue.");
+                }
+            }
+        }
+
+        private string GenerateJwtToken(string email, string userId)
         {
             try
             {
@@ -161,7 +208,7 @@ namespace RepositoryLayer.Services
                     Subject = new ClaimsIdentity(new[]
                     {
                     new Claim(ClaimTypes.Email, email),
-                    new Claim("UserId", userId.ToString())
+                    new Claim("UserId", userId)
                     }),
 
                     Expires = DateTime.UtcNow.AddMinutes(15),
@@ -175,27 +222,23 @@ namespace RepositoryLayer.Services
             {
                 throw e;
             }
-
         }
-        public void msmqQueue_ReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
+        public string GenerateToken(string Email)
         {
-            try
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(this._secret);
+            var tokenDiscriptor = new SecurityTokenDescriptor
             {
-                MessageQueue queue = (MessageQueue)sender;
-                Message msg = queue.EndReceive(e.AsyncResult);
-                EmailServices.SendEmail(e.Message.ToString(), GetJWTToken(e.Message.ToString()));
-                queue.BeginReceive();
-            }
-            catch (MessageQueueException ex)
-            {
-                if (ex.MessageQueueErrorCode == MessageQueueErrorCode.AccessDenied)
+                Subject = new ClaimsIdentity(new[]
                 {
-                    Console.WriteLine("Access is denied. " +
-                        "Queue might be a system queue.");
-                }
-            }
+                    new Claim(ClaimTypes.Email,Email)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(15),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDiscriptor);
+            return tokenHandler.WriteToken(token);
         }
 
-      
     }
 }

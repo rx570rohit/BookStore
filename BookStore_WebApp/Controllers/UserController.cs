@@ -9,6 +9,7 @@ using RepositoryLayer.Interfaces;
 using RepositoryLayer.Services;
 using RepositoryLayer.Services.Entity;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookStore_WebApp.Controllers
@@ -89,22 +90,21 @@ namespace BookStore_WebApp.Controllers
 
 
         }
-
         [HttpPost("Forgotpassword/{Email}")]
         public IActionResult ForgotPassword(String Email)
         {
-            var user = fundooContext.Users.FirstOrDefault(u => u.Email == Email);
+            var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
             if (user == null)
             {
                 return this.BadRequest(new { success = false, message = "Email Not Found" });
             }
-            string Password = PwdEncryptDecryptService.DecryptPassword(user.Password);
-
-            var userdata1 = fundooContext.Users.FirstOrDefault(u => u.Email == Email);
-            if (userdata1 == null)
-            {
-                return this.BadRequest(new { success = false, message = "Password " });
-            }
+            //string Password = PwdEncryptDecryptService.DecryptPassword(user.Password);
+            
+            //var userdata1 = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
+            //if (userdata1 == null)
+            //{
+            //    return this.BadRequest(new { success = false, message = "Password " });
+            //}
             bool result = this.userBL.ForgotPassword(Email);
             return this.Ok(new { success = true, message = "Tokne sented successfully to respective email Id ", data = result });
         }
@@ -116,9 +116,9 @@ namespace BookStore_WebApp.Controllers
             try
             {
                 var userid = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase));
-                int UserID = Int32.Parse(userid.Value);
-                var result = fundooContext.Users.Where(u => u.UserId == UserID).FirstOrDefault();
-                string Email = result.Email.ToString();
+                string UserID = userid.Value;
+                var result = context.mongoUserCollections.AsQueryable().Where(u => u.UserId == UserID).FirstOrDefault();
+                string Email = result.EmailId.ToString();
                 if (userPasswordModel.Password != userPasswordModel.ConfirmPassword)
                 {
                     return BadRequest(new { success = false, message = "Password and Confirm password must be same" });

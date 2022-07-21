@@ -40,6 +40,8 @@ namespace BookStore_WebApp
             services.AddSingleton<IDBSetting>(sp =>
                sp.GetRequiredService<IOptions<DBSetting>>().Value);
             //services.AddSingleton<IDBSetting>();
+            var secret = this.Configuration.GetSection("JwtConfig").GetSection("SecretKey").Value;
+            var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddTransient<IbookstoreContext, bookstoreContext>();
 
@@ -58,9 +60,11 @@ namespace BookStore_WebApp
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("THIS_IS_MY_KEY_TO_GENERATE_TOKEN")),
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                     ValidIssuer = "localhost",
+                    ValidAudience = "localhost"
                 };
             });
 

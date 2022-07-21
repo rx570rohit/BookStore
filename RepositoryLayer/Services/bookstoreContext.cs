@@ -11,9 +11,10 @@ namespace RepositoryLayer.Services
     public class bookstoreContext: IbookstoreContext
     {
 
-        public    IMongoCollection<User> Users;
-        private readonly IMongoDatabase mongodb;
-        private  IConfiguration Configuration;
+        public IMongoCollection<User> Users;
+        public IMongoCollection<Book> Books;
+
+        private IConfiguration Configuration;
         public bookstoreContext(IDBSetting db, IConfiguration configuration)
         {
 
@@ -39,6 +40,8 @@ namespace RepositoryLayer.Services
             var database = userclient.GetDatabase(db.DatabaseName);
 
             Users = database.GetCollection<User>("Users");
+            Books = database.GetCollection<Book>("Books");
+
 
         }
         public IMongoCollection<User> mongoUserCollections
@@ -48,6 +51,13 @@ namespace RepositoryLayer.Services
                 return Users;
             }
         }
-       
+        public IMongoCollection<Book> mongoBookCollections
+        {
+            get
+            {
+                return Books;
+            }
+        }
+
     }
 }

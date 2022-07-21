@@ -11,6 +11,7 @@ namespace BussinessLayer.Interfaces
         Task<userPostModel> AddUser(userPostModel userPostModel);
 
         public string LogInUser(string Email, string Password);
-
+        bool ForgotPassword(string email);
+        bool ResetPassword(string email, UserPasswordModel userPasswordModel);
     }
 }

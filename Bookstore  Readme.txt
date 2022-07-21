@@ -53,3 +53,11 @@ var client = new MongoClient(connectionString);
 
 *****************************auth*************
 https://stackoverflow.com/questions/44513786/error-on-mongodb-authentication
+
+
+
+
+{
+  "password": "Rx@570rrr",
+  "confirmPassword": "Rx@570rrr"
+}
