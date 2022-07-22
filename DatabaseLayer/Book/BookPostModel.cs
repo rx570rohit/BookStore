@@ -1,18 +1,11 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RepositoryLayer.Services.Entity
+namespace DatabaseLayer.Book
 {
- 
-    [BsonIgnoreExtraElements]
-    public class Book
+    public class BookPostModel
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string BookId { get; set; }
         public string BookName { get; set; }
         public string AuthorName { get; set; }
         public decimal Rating { get; set; }
@@ -22,7 +15,5 @@ namespace RepositoryLayer.Services.Entity
         public string Description { get; set; }
         public string BookImage { get; set; }
         public string BookQuantity { get; set; }
-
-        
     }
 }

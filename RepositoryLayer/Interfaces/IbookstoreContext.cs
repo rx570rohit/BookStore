@@ -11,5 +11,7 @@ namespace RepositoryLayer.Interfaces
     public interface IbookstoreContext
     {
         public IMongoCollection<User> mongoUserCollections { get; }
+        public IMongoCollection<Book> mongoBookollections { get; }
+
     }
 }

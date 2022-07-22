@@ -51,13 +51,10 @@ namespace RepositoryLayer.Services
                 return Users;
             }
         }
-        public IMongoCollection<Book> mongoBookCollections
-        {
-            get
-            {
-                return Books;
-            }
-        }
 
+        public IMongoCollection<Book> mongoBookollections
+        {
+            get { return Books; }   
+        }
     }
 }

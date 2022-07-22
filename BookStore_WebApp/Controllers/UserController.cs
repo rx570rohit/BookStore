@@ -20,16 +20,11 @@ namespace BookStore_WebApp.Controllers
     {
         IbookstoreContext context;
 
-        IDBSetting db;
-        IConfiguration configuration;
-
         IUserBL userBL;
 
-        public UserController(IUserBL userBL, IDBSetting db, IConfiguration configuration, IbookstoreContext context)
+        public UserController(IUserBL userBL, IbookstoreContext context)
         {
             this.userBL = userBL;
-            this.db = db;
-            this.configuration = configuration;
 
             this.context = context;
         }

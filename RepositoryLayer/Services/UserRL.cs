@@ -46,7 +46,7 @@ namespace RepositoryLayer.Services
            // Users = database.GetCollection<User>("Users");
             
         }
-        public async Task<userPostModel> AddUser(userPostModel userPostModel)
+        public async Task<User> AddUser(userPostModel userPostModel)
         {
             User user = new User();
             user.FisrtName = userPostModel.FirstName;
@@ -59,6 +59,7 @@ namespace RepositoryLayer.Services
             try
             {
                 var check = context.mongoUserCollections.AsQueryable().Where(x => x.EmailId == userPostModel.Email).FirstOrDefault();
+                
 
                // var check = context.mongoCollection(db,configuration).AsQueryable().Where(x => x.EmailId == userPostModel.Email).FirstOrDefault();
 
@@ -69,7 +70,7 @@ namespace RepositoryLayer.Services
                     // await this.Users.InsertOneAsync(user);
                      await context.mongoUserCollections.InsertOneAsync(user);
 
-                    return userPostModel;
+                    return user;
                 }
                 return null;
             }

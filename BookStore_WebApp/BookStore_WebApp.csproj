@@ -15,10 +15,14 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+	  
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BussinessLayer\BussinessLayer.csproj" />
+	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+	  <ProjectReference Include="..\BussinessLayer\BussinessLayer.csproj" />
     <ProjectReference Include="..\RepositoryLayer\RepositoryLayer.csproj" />
   </ItemGroup>
 

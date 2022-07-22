@@ -2,6 +2,7 @@
 using DataBaseLayer.Users;
 using RepositoryLayer.Interfaces;
 using RepositoryLayer.Services;
+using RepositoryLayer.Services.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace BussinessLayer.Services
             this.userRL = userRL;
         }
     
-        public async Task<userPostModel> AddUser(userPostModel userLoginModel)
+        public async Task<User> AddUser(userPostModel userLoginModel)
         {
            return await this.userRL.AddUser(userLoginModel);
         }

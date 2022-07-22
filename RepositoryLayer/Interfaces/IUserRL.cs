@@ -1,4 +1,5 @@
 ﻿using DataBaseLayer.Users;
+using RepositoryLayer.Services.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace RepositoryLayer.Interfaces
 {
     public interface IUserRL
     {
-    public Task<userPostModel> AddUser(userPostModel userPostModel);
+    public Task<User> AddUser(userPostModel userPostModel);
 
     public string LogInUser(string Email, string Password);
         bool ForgotPassword(string email);

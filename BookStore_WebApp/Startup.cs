@@ -45,9 +45,13 @@ namespace BookStore_WebApp
 
             services.AddTransient<IbookstoreContext, bookstoreContext>();
 
-
+            //
+            services.AddTransient<IBookBl, BookBl>();
+            services.AddTransient<IBookRl, BookRl>();
+            //
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
+
             services.AddControllers();
             services.AddAuthentication(x =>
             {
