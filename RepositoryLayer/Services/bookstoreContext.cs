@@ -11,8 +11,14 @@ namespace RepositoryLayer.Services
     public class bookstoreContext: IbookstoreContext
     {
 
-        public IMongoCollection<User> Users;
-        public IMongoCollection<Book> Books;
+        public IMongoCollection<Users> Users;
+        public IMongoCollection<Books> Books;
+        public IMongoCollection<Carts> carts;
+        public IMongoCollection<WishList> WishLists;
+        public IMongoCollection<Addresses> Addresses;
+
+
+
 
         private IConfiguration Configuration;
         public bookstoreContext(IDBSetting db, IConfiguration configuration)
@@ -39,12 +45,15 @@ namespace RepositoryLayer.Services
             var userclient = new MongoClient(db.ConnectionString);
             var database = userclient.GetDatabase(db.DatabaseName);
 
-            Users = database.GetCollection<User>("Users");
-            Books = database.GetCollection<Book>("Books");
+            Users = database.GetCollection<Users>("Users");
+            Books = database.GetCollection<Books>("Books");
+            carts = database.GetCollection<Carts>("carts");
+            WishLists = database.GetCollection<WishList>("WishLists");
+            Addresses = database.GetCollection<Addresses>("Addresses");
 
 
         }
-        public IMongoCollection<User> mongoUserCollections
+        public IMongoCollection<Users> mongoUserCollections
         {
             get
             {
@@ -52,9 +61,22 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public IMongoCollection<Book> mongoBookollections
+        public IMongoCollection<Books> mongoBookCollections
         {
             get { return Books; }   
+        }
+
+        public IMongoCollection<Carts> mongoCartCollections
+        {
+            get { return carts; }
+        }
+        public IMongoCollection<WishList> mongoWishListCollections
+        {
+            get { return WishLists; }
+        }
+        public IMongoCollection<Addresses> mongoAddressCollections
+        {
+            get { return Addresses; }
         }
     }
 }

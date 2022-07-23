@@ -8,20 +8,20 @@ using System.Text;
 namespace RepositoryLayer.Services.Entity
 {
     [BsonIgnoreExtraElements]
-    public class Carts
+    public class Addresses
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string cartId{ get; set; }
-
-     //  [ForeignKey("Users")]
+        public string addressID { get; set; }
+     //   [ForeignKey("RegisterModel")]
         public string userId { get; set; }
         public virtual Users user { get; set; }
-
-     //  [ForeignKey("Books")]
-        public string BookId { get; set; }
-        public virtual Books book { get; set; }
-        public int Quantity { get; set; }
+     //   [ForeignKey("AddressModel")]
+       // public string addressTypeID { get; set; }
+        public string fullAddress { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public double pinCode { get; set; }
 
 
     }

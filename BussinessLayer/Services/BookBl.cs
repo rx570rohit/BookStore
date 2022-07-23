@@ -19,13 +19,13 @@ namespace BussinessLayer.Services
             this.bookrl = bookrl;   
         }
 
-        public Task<Book> UpdateBook(BookPostModel book)
+        public Task<Books> UpdateBook(BookPostModel book)
         {
             return bookrl.UpdateBook(book);
 
         }
 
-        Task<Book> IBookBl.AddBook(BookPostModel book)
+        Task<Books> IBookBl.AddBook(BookPostModel book)
         {
             return bookrl.AddBook(book);
 
@@ -37,7 +37,7 @@ namespace BussinessLayer.Services
             return bookrl.DeleteBook(bookName,AuthorName);
 
         }
-        public IEnumerable<Book> GetAllBooks()
+        public IEnumerable<Books> GetAllBooks()
         {
             return bookrl.GetAllBooks();
 

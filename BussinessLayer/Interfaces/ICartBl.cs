@@ -1,4 +1,5 @@
-﻿using RepositoryLayer.Services.Entity;
+﻿using DatabaseLayer.Cart;
+using RepositoryLayer.Services.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +9,9 @@ namespace BussinessLayer.Interfaces
 {
     public interface ICartBl
     {
-        Task<string> AddToCart(Carts cart);
+        Task<Carts> AddToCart(string UserId, CartPostModel cart);
         Task<bool> RemoveCart(Carts cart);
-        Task<string> UpdateCartQuantity(Carts cart);
-        object GetAllCart();
+        Task<Carts> UpdateCartQuantity(string userId, string bookName, string authorName, int quantity);
+        IEnumerable<Carts> GetAllCart(string userid);
     }
 }

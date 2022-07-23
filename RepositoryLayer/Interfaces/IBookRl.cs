@@ -9,12 +9,12 @@ using RepositoryLayer.Services.Entity;
 namespace RepositoryLayer.Interfaces
 {
     public interface IBookRl
-    {    public Task<Book> AddBook(BookPostModel book);
+    {    public Task<Books> AddBook(BookPostModel book);
        
         public Task<bool> DeleteBook(string bookName, string AuthorName);
        
-        Task<Book> UpdateBook(BookPostModel book);
-        public IEnumerable<Book> GetAllBooks();
+        Task<Books> UpdateBook(BookPostModel book);
+        public IEnumerable<Books> GetAllBooks();
 
     }
 }
