@@ -11,6 +11,7 @@ using DatabaseLayer.Book;
 using System.IO;
 using System.Drawing;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RepositoryLayer.Services
 {
@@ -129,9 +130,9 @@ namespace RepositoryLayer.Services
                 }
             }
 
-       
 
 
+        [Authorize]
         public IEnumerable<Books> GetAllBooks()
         {
            var v = context.mongoBookCollections.Find(FilterDefinition<Books>.Empty);

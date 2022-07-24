@@ -12,6 +12,8 @@ namespace RepositoryLayer.Services
     {
 
         public IMongoCollection<Users> Users;
+        public IMongoCollection<Admin> Admins;
+
         public IMongoCollection<Books> Books;
         public IMongoCollection<Carts> carts;
         public IMongoCollection<WishList> WishLists;
@@ -48,6 +50,8 @@ namespace RepositoryLayer.Services
             var database = userclient.GetDatabase(db.DatabaseName);
 
             Users = database.GetCollection<Users>("Users");
+            Admins = database.GetCollection<Admin>("Admins");
+
             Books = database.GetCollection<Books>("Books");
             carts = database.GetCollection<Carts>("carts");
             WishLists = database.GetCollection<WishList>("WishLists");
@@ -84,6 +88,11 @@ namespace RepositoryLayer.Services
         public IMongoCollection<Orders> mongoOrdersCollections
         {
             get { return Orders; }
+        }
+
+        public IMongoCollection<Admin> mongoAdminCollections
+        {
+            get { return Admins; }
         }
     }
 }

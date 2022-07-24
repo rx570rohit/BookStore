@@ -33,7 +33,6 @@ namespace BookStore_WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.Configure<DBSetting>(
                 this.Configuration.GetSection(nameof(DBSetting)));
 
@@ -41,6 +40,13 @@ namespace BookStore_WebApp
                sp.GetRequiredService<IOptions<DBSetting>>().Value);
             var secret = this.Configuration.GetSection("JwtConfig").GetSection("SecretKey").Value;
             var key = Encoding.ASCII.GetBytes(secret);
+
+            var secretAdmin = this.Configuration.GetSection("JwtConfig").GetSection("SecretKeyAdmin").Value;
+            var keyAdmin= Encoding.ASCII.GetBytes(secretAdmin);
+
+            var Key = new SymmetricSecurityKey(key);
+            var KeyAdmin = new SymmetricSecurityKey(keyAdmin);  
+
 
             services.AddTransient<IbookstoreContext, bookstoreContext>();
 
@@ -64,6 +70,10 @@ namespace BookStore_WebApp
             services.AddTransient<IBookBl, BookBl>();
             services.AddTransient<IBookRl, BookRl>();
             //
+            services.AddTransient<IAdminBL, AdminBL>();
+            services.AddTransient<IAdminRL, AdminRL>();
+
+
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
 
@@ -78,11 +88,13 @@ namespace BookStore_WebApp
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
+
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                   // IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKeys = new List<SecurityKey> { Key,KeyAdmin },
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                     ValidIssuer = "localhost",
+                    ValidIssuer = "localhost",
                     ValidAudience = "localhost"
                 };
             });

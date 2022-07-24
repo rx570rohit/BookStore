@@ -21,6 +21,9 @@ namespace RepositoryLayer.Interfaces
 
         public IMongoCollection<Orders> mongoOrdersCollections { get; }
 
+        public IMongoCollection<Admin> mongoAdminCollections { get; }
+
+
 
 
     }
