@@ -10,8 +10,18 @@ namespace RepositoryLayer.Interfaces
 {
     public interface IbookstoreContext
     {
-        public IMongoCollection<User> mongoUserCollections { get; }
-        public IMongoCollection<Book> mongoBookollections { get; }
+        public IMongoCollection<Users> mongoUserCollections { get; }
+        public IMongoCollection<Books> mongoBookCollections { get; }
+
+        public IMongoCollection<Carts> mongoCartCollections { get; }
+
+        public IMongoCollection<WishList> mongoWishListCollections { get; }
+
+        public IMongoCollection<Addresses> mongoAddressCollections { get; }
+
+        public IMongoCollection<Orders> mongoOrdersCollections { get; }
+
+
 
     }
 }

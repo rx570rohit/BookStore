@@ -8,7 +8,7 @@ namespace RepositoryLayer.Services.Entity
 {
  
     [BsonIgnoreExtraElements]
-    public class Book
+    public class Books
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

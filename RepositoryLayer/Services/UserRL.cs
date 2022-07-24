@@ -43,12 +43,12 @@ namespace RepositoryLayer.Services
             
 
             
-           // Users = database.GetCollection<User>("Users");
+           // Users = database.GetCollection<Users>("Users");
             
         }
-        public async Task<User> AddUser(userPostModel userPostModel)
+        public async Task<Users> AddUser(userPostModel userPostModel)
         {
-            User user = new User();
+            Users user = new Users();
             user.FisrtName = userPostModel.FirstName;
             user.LastName = userPostModel.LastName;
             user.EmailId = userPostModel.Email;
@@ -167,7 +167,7 @@ namespace RepositoryLayer.Services
                     //var filter = Builders<BsonDocument>.Filter.Eq("UserId", user.UserId);
                     //var update  = Builders<BsonDocument>.Update.Set("Password", user.Password);
                     context.mongoUserCollections.UpdateOneAsync(x => x.EmailId == email,
-                        Builders<User>.Update.Set(x => x.Password, user.Password));
+                        Builders<Users>.Update.Set(x => x.Password, user.Password));
                 }
 
                 return true;

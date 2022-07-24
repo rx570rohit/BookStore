@@ -9,7 +9,7 @@ namespace BussinessLayer.Interfaces
 {
     public interface IUserBL
     {
-        Task<User> AddUser(userPostModel userPostModel);
+        Task<Users> AddUser(userPostModel userPostModel);
 
         public string LogInUser(string Email, string Password);
         bool ForgotPassword(string email);

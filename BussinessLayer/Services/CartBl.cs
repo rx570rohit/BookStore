@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Interfaces;
+using DatabaseLayer.Cart;
 using RepositoryLayer.Interfaces;
 using RepositoryLayer.Services.Entity;
 using System;
@@ -15,24 +16,24 @@ namespace BussinessLayer.Services
         {
             this.cartrl = cartrl;
         }
-        Task<string> ICartBl.AddToCart(Carts cart)
+        public Task<Carts> AddToCart(string UserId, CartPostModel cart)
         {
-            return cartrl.AddToCart(cart);
+            return cartrl.AddToCart(UserId,cart);
         }
 
-        object ICartBl.GetAllCart()
+        public IEnumerable<Carts> GetAllCart(string userid)
         {
-            return cartrl.GetAllCart();
+            return cartrl.GetAllCart(userid);
         }
 
-        Task<bool> ICartBl.RemoveCart(Carts cart)
+        public Task<bool> RemoveCart(String cartId)
         {
-            return cartrl.RemoveCart( cart);
+            return cartrl.RemoveCart( cartId);
         }
 
-        Task<string> ICartBl.UpdateCartQuantity(Carts cart)
+        public Task<Carts> UpdateCartQuantity(string userId, string bookName, string authorName, int quantity)
         {
-            return cartrl.UpdateCartQuantity(cart);
+            return cartrl.UpdateCartQuantity(userId, bookName, authorName, quantity);
         }
     }
 }

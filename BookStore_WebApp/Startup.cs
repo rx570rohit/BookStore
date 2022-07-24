@@ -39,11 +39,26 @@ namespace BookStore_WebApp
 
             services.AddSingleton<IDBSetting>(sp =>
                sp.GetRequiredService<IOptions<DBSetting>>().Value);
-            //services.AddSingleton<IDBSetting>();
             var secret = this.Configuration.GetSection("JwtConfig").GetSection("SecretKey").Value;
             var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddTransient<IbookstoreContext, bookstoreContext>();
+
+            services.AddTransient<IWishListBl, WishListBl>();
+            services.AddTransient<IWishListRl, WishListRl>();
+
+            services.AddTransient<IOrderBl, OrderBl>();
+            services.AddTransient<IOrderRl, OrderRl>();
+
+
+
+            services.AddTransient<IAddressBl, AddressBl>();
+            services.AddTransient<IAddressRl, AddressRl>();
+
+            services.AddTransient<ICartBl, CartBl>();
+            services.AddTransient<ICartRl, CartRl>();
+
+
 
             //
             services.AddTransient<IBookBl, BookBl>();

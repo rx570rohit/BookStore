@@ -68,7 +68,7 @@ namespace BookStore_WebApp.Controllers
 
                 string password = PwdEncryptDecryptService.EncryptPassword(Password);
 
-                var userdata1 = context.mongoUserCollections.Find<User>(u => u.EmailId == Email && u.Password == password).FirstOrDefault();
+                var userdata1 = context.mongoUserCollections.Find<Users>(u => u.EmailId == Email && u.Password == password).FirstOrDefault();
                 if (userdata1 == null)
                 {
                     return this.BadRequest(new { success = false, message = "Password is Invalid" });

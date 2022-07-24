@@ -41,12 +41,12 @@ namespace BookStore_WebApp.Controllers
                 if (resp != null)
                 {
 
-                    return this.Ok(new { Status = true, Message = " Book Record save ", Data = resp });
+                    return this.Ok(new { Status = true, Message = " Books Record save ", Data = resp });
                 }
                 else
                 {
 
-                    return this.BadRequest(new { Status = false, Message = "Book Record not Save" });
+                    return this.BadRequest(new { Status = false, Message = "Books Record not Save" });
                 }
             }
             catch (Exception e)
@@ -69,12 +69,12 @@ namespace BookStore_WebApp.Controllers
                 if (resp != null)
                 {
 
-                    return this.Ok(new { Status = true, Message = " Book Fecord Update Succeessfully ", Data = resp });
+                    return this.Ok(new { Status = true, Message = " Books Fecord Update Succeessfully ", Data = resp });
                 }
                 else
                 {
 
-                    return this.BadRequest(new { Status = false, Message = "Book Record not Update" });
+                    return this.BadRequest(new { Status = false, Message = "Books Record not Update" });
                 }
             }
             catch (Exception e)
@@ -87,7 +87,7 @@ namespace BookStore_WebApp.Controllers
         }
         [HttpGet("getallbook")]
         
-        public IEnumerable<Book> GetAllBooks()
+        public IEnumerable<Books> GetAllBooks()
         {
             try
             {
@@ -122,12 +122,12 @@ namespace BookStore_WebApp.Controllers
                 if (resp != false)
                 {
 
-                    return this.Ok(new{ Status = true, Message = " Book Delete Successfully ", Data = resp });
+                    return this.Ok(new{ Status = true, Message = " Books Delete Successfully ", Data = resp });
                 }
                 else
                 {
 
-                    return this.BadRequest(new { Status = false, Message = "Book Not Found" });
+                    return this.BadRequest(new { Status = false, Message = "Books Not Found" });
                 }
             }
             catch (Exception e)

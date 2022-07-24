@@ -18,7 +18,7 @@ namespace BussinessLayer.Services
             this.userRL = userRL;
         }
     
-        public async Task<User> AddUser(userPostModel userLoginModel)
+        public async Task<Users> AddUser(userPostModel userLoginModel)
         {
            return await this.userRL.AddUser(userLoginModel);
         }

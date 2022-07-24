@@ -1,4 +1,5 @@
 ﻿using DatabaseLayer.Cart;
+using DatabaseLayer.WishList;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -12,17 +13,17 @@ using System.Threading.Tasks;
 
 namespace RepositoryLayer.Services
 {
-    public class CartRl : ICartRl
+    public class WishListRl : IWishListRl
     {
         IbookstoreContext context;
 
         private readonly IConfiguration Configuration;
-        public CartRl(IbookstoreContext context, IConfiguration Configuration)
+        public WishListRl(IbookstoreContext context, IConfiguration Configuration)
         {
                 this.context = context; 
                 this.Configuration= Configuration;  
         }
-        public async Task<Carts> AddToCart(string UserId ,CartPostModel cart)
+        public async Task<WishList> AddToWishList(string UserId , WishListPostModel cart)
         {
             try
             {
@@ -58,7 +59,6 @@ namespace RepositoryLayer.Services
                     AuthorName = book.AuthorName,
                     BookName = book.BookName,
                     BookImage = book.BookImage,
-                    BookQuantity = book.BookQuantity,
                     ActualPrice = book.ActualPrice,
                     Description = book.Description,
                     DiscountPrice = book.DiscountPrice,
@@ -66,18 +66,17 @@ namespace RepositoryLayer.Services
                     totalRating = book.totalRating
                 };
 
-                Carts carts = new Carts()
+                WishList wishList = new WishList()
                 {
                     BookId = cart.BookId,
                     userId = UserId,
-                    book = bookdetail,
+                    Book  = bookdetail,
                      user = userdetail,
-                    Quantity = cart.quantity,
                 };
 
-                    await context.mongoCartCollections.InsertOneAsync(carts);
+                    await context.mongoWishListCollections.InsertOneAsync(wishList);
                 
-                return carts;
+                return wishList;
 
             }
             catch (Exception e)
@@ -86,9 +85,9 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public IEnumerable<Carts> GetAllCart(string userid)
+        public IEnumerable<WishList> GetAllWishLists(string userid)
         {
-            var v = context.mongoCartCollections.AsQueryable().Where(x=>x.userId == userid);
+            var v = context.mongoWishListCollections.AsQueryable().Where(x=>x.userId == userid);
             if(v != null)
             {
                 return v.ToList();
@@ -96,38 +95,14 @@ namespace RepositoryLayer.Services
             return null;
         }
 
-        public async Task<bool> RemoveCart(string cartId)
+        public async Task<bool> RemoveWishList(string wishListID)
         {
-            var cartInfo = await context.mongoCartCollections.FindOneAndDeleteAsync(x => x.cartId == cartId);
+            var cartInfo = await context.mongoWishListCollections.FindOneAndDeleteAsync(x => x.wishListID == wishListID);
             if (cartInfo != null)
             {
                 return true;
             } 
             return false;
-        }
-
-        public async Task<Carts> UpdateCartQuantity(string userId,string bookName,string authorName ,int quantity)
-        {
-            try
-            {
-                var cartInfo = await context.mongoCartCollections.AsQueryable().Where( x=>x.book.BookName==bookName && x.book.AuthorName==authorName && x.userId==userId).FirstOrDefaultAsync();
-                var cartID = cartInfo.cartId;
-
-
-                if (cartID != null)
-                {
-                    await context.mongoCartCollections.UpdateOneAsync(x => x.cartId == cartID,
-                        Builders<Carts>.Update.Set(x => x.Quantity, quantity));
-
-                    return cartInfo;
-                }
-                return null;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
         }
     }
 }

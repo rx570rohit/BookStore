@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interfaces;
 using DatabaseLayer.Cart;
+using DatabaseLayer.WishList;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryLayer.Services.Entity;
@@ -13,27 +14,27 @@ namespace BookStore_WebApp.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class CartController : ControllerBase
+    public class WishListController : ControllerBase
     {
-        private readonly ICartBl cartbl;
+        private readonly IWishListBl wishListBl;
 
 
-        public CartController(ICartBl cart)
+        public WishListController(IWishListBl wish)
         {
-            this.cartbl = cart;
+            this.wishListBl = wish;
 
         }
-        [HttpPost("AddToCart")]
+        [HttpPost("AddToWishList")]
        
 
-        public async Task<IActionResult> AddToCart(CartPostModel cart)
+        public async Task<IActionResult> AddToWishList(WishListPostModel wishList)
         {
             try
             {
 
                 var userId = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase)).Value;
 
-                var resp = await this.cartbl.AddToCart(userId,cart);
+                var resp = await this.wishListBl.AddToWishList(userId,wishList);
 
                 if (resp != null)
                 {
@@ -54,13 +55,13 @@ namespace BookStore_WebApp.Controllers
                 }
             }
         }
-        [HttpDelete("RemoveCart")]
-        public async Task<IActionResult> RemoveCart(String cartId )
+        [HttpDelete("RemoveWishList")]
+        public async Task<IActionResult> RemoveWishList(string wishListID)
         {
             try
             {
 
-                bool resp = await this.cartbl.RemoveCart(cartId);
+                bool resp = await this.wishListBl.RemoveWishList(wishListID);
                 if (resp != false)
                 {
 
@@ -81,42 +82,14 @@ namespace BookStore_WebApp.Controllers
 
         }
 
-        [HttpPut("UpdateCartQuantity")]
-        public async Task<IActionResult> UpdateCartQuantity( string bookName ,string authorName ,int quantity)
-        {
-            try
-            {
-                var userId = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase)).Value;
-               
-
-                var resp = await this.cartbl.UpdateCartQuantity(userId,bookName,authorName,quantity);
-                if (resp != null)
-                {
-
-                    return this.Ok(new  { Status = true, Message = " Data Is UpDate ", Data = resp });
-                }
-                else
-                {
-
-                    return this.BadRequest(new { Status = false, Message = "Record not Found" });
-                }
-            }
-            catch (Exception e)
-            {
-                {
-
-                    return this.NotFound(new { Status = false, Message = e.Message });
-                }
-            }
-        }
-        [HttpGet("GetAllCart")]
-        public IEnumerable<Carts> GetAllCart()
+        [HttpGet("GetAllWishLists")]
+        public IEnumerable<WishList> GetAllWishLists()
         {
             try
             {
                 var userId = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase)).Value;
 
-                var resp = this.cartbl.GetAllCart(userId);
+                var resp = this.wishListBl.GetAllWishLists(userId);
                 return resp;
             }
 

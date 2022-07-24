@@ -9,7 +9,7 @@ namespace RepositoryLayer.Interfaces
 {
     public interface IUserRL
     {
-    public Task<User> AddUser(userPostModel userPostModel);
+    public Task<Users> AddUser(userPostModel userPostModel);
 
     public string LogInUser(string Email, string Password);
         bool ForgotPassword(string email);
