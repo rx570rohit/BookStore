@@ -202,7 +202,8 @@ namespace RepositoryLayer.Services
                     Subject = new ClaimsIdentity(new[]
                     {
                     new Claim(ClaimTypes.Email, email),
-                    new Claim("AdminId", userId)
+                    new Claim("AdminId", userId),
+                    new Claim(ClaimTypes.Role,"Admin")
                     }),
 
                     Expires = DateTime.UtcNow.AddMinutes(15),

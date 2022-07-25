@@ -37,7 +37,7 @@ namespace BussinessLayer.Services
             return bookrl.DeleteBook(bookName,AuthorName);
 
         }
-        public IEnumerable<Books> GetAllBooks()
+        public Task<IEnumerable<Books>> GetAllBooks()
         {
             return bookrl.GetAllBooks();
 

@@ -17,7 +17,6 @@ namespace RepositoryLayer.Services.Entity
         public string userID { get; set; }
 
 
-        // public string CartId { get; set; }
         public virtual Carts Cart { get; set; } 
         public string addressID { get; set; }
         public virtual Addresses Address { get; set; }

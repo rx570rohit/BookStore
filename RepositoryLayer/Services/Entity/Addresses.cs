@@ -13,11 +13,8 @@ namespace RepositoryLayer.Services.Entity
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string addressID { get; set; }
-     //   [ForeignKey("RegisterModel")]
         public string userId { get; set; }
         public virtual Users user { get; set; }
-     //   [ForeignKey("AddressModel")]
-       // public string addressTypeID { get; set; }
         public string fullAddress { get; set; }
         public string city { get; set; }
         public string state { get; set; }

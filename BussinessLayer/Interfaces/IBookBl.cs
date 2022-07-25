@@ -14,6 +14,6 @@ namespace BussinessLayer.Interfaces
 
         public Task<bool> DeleteBook(string bookName, string AuthorName);
         Task<Books> UpdateBook(BookPostModel book);
-        public IEnumerable<Books> GetAllBooks();
+        Task<IEnumerable<Books>> GetAllBooks();
     }
 }

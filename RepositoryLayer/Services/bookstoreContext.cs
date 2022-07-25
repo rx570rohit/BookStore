@@ -19,6 +19,8 @@ namespace RepositoryLayer.Services
         public IMongoCollection<WishList> WishLists;
         public IMongoCollection<Addresses> Addresses;
         public IMongoCollection<Orders> Orders;
+        public IMongoCollection<Feedback> Feedback;
+
 
 
 
@@ -57,6 +59,8 @@ namespace RepositoryLayer.Services
             WishLists = database.GetCollection<WishList>("WishLists");
             Addresses = database.GetCollection<Addresses>("Addresses");
             Orders = database.GetCollection<Orders>("Orders");
+            Feedback = database.GetCollection<Feedback>("Feedbacks");
+
 
         }
         public IMongoCollection<Users> mongoUserCollections
@@ -93,6 +97,11 @@ namespace RepositoryLayer.Services
         public IMongoCollection<Admin> mongoAdminCollections
         {
             get { return Admins; }
+        }
+
+        public IMongoCollection<Feedback> mongoFeedbackCollections
+        {
+            get { return Feedback; }
         }
     }
 }

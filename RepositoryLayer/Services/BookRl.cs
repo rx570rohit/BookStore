@@ -25,7 +25,7 @@ namespace RepositoryLayer.Services
             this.context = context;
             this.env= env;
         }
-
+        
         public async Task<Books> AddBook(BookPostModel book)
         {
             try
@@ -132,11 +132,10 @@ namespace RepositoryLayer.Services
 
 
 
-        [Authorize]
-        public IEnumerable<Books> GetAllBooks()
+        public async Task<IEnumerable<Books>> GetAllBooks()
         {
            var v = context.mongoBookCollections.Find(FilterDefinition<Books>.Empty);
-            return v.ToList();
+            return await v.ToListAsync();
 
         }
 

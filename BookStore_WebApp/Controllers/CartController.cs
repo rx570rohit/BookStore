@@ -24,8 +24,6 @@ namespace BookStore_WebApp.Controllers
 
         }
         [HttpPost("AddToCart")]
-       
-
         public async Task<IActionResult> AddToCart(CartPostModel cart)
         {
             try
