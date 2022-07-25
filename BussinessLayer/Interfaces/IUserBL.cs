@@ -1,4 +1,5 @@
 ﻿using DataBaseLayer.Users;
+using RepositoryLayer.Services.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,10 @@ namespace BussinessLayer.Interfaces
 {
     public interface IUserBL
     {
-        Task<userPostModel> AddUser(userPostModel userPostModel);
+        Task<Users> AddUser(userPostModel userPostModel);
+
+        public string LogInUser(string Email, string Password);
+        bool ForgotPassword(string email);
+        bool ResetPassword(string email, UserPasswordModel userPasswordModel);
     }
 }

@@ -18,7 +18,7 @@ using MongoDB.Bson;
 namespace RepositoryLayer.Services
 {
 
-    public class UserRL:IUserRL
+    public class AdminRL:IAdminRL
     {
 
         IbookstoreContext context;
@@ -28,16 +28,14 @@ namespace RepositoryLayer.Services
         private readonly string _secret;
 
 
-        public UserRL(IConfiguration configuration,IbookstoreContext ibc)
+        public AdminRL(IConfiguration configuration,IbookstoreContext ibc)
         {
 
             this.context = ibc;
            
             this.Configuration = configuration;
             
-            //var userclient = new MongoClient(db.ConnectionString);
             
-           // var database = userclient.GetDatabase(db.DatabaseName);
             this._secret = configuration.GetSection("JwtConfig").GetSection("SecretKey").Value;
 
             
@@ -46,31 +44,26 @@ namespace RepositoryLayer.Services
            // Users = database.GetCollection<Users>("Users");
             
         }
-        public async Task<Users> AddUser(userPostModel userPostModel)
+        public async Task<Admin> AddAdmin(userPostModel userPostModel)
         {
-            Users user = new Users();
-            user.FisrtName = userPostModel.FirstName;
-            user.LastName = userPostModel.LastName;
-            user.EmailId = userPostModel.Email;
-            // user.Address = userPostModel.Address;
-            user.CreatedDate = userPostModel.CreatedDate;
-            user.Password= PwdEncryptDecryptService.EncryptPassword(userPostModel.Password);
-
+            Admin admin = new Admin() { 
+            FisrtName = userPostModel.FirstName,
+            LastName = userPostModel.LastName,
+            EmailId = userPostModel.Email,
+            CreatedDate = userPostModel.CreatedDate,
+            Password = PwdEncryptDecryptService.EncryptPassword(userPostModel.Password)
+        };
             try
             {
-                var check = context.mongoUserCollections.AsQueryable().Where(x => x.EmailId == userPostModel.Email).FirstOrDefault();
+                var check = context.mongoAdminCollections.AsQueryable().Where(x => x.EmailId == userPostModel.Email).FirstOrDefault();
                 
 
-               // var check = context.mongoCollection(db,configuration).AsQueryable().Where(x => x.EmailId == userPostModel.Email).FirstOrDefault();
-
-               // var check = this.Users.AsQueryable().Where(x => x.EmailId == userPostModel.Email).FirstOrDefault();
 
                 if (check == null)
                 {
-                    // await this.Users.InsertOneAsync(user);
-                     await context.mongoUserCollections.InsertOneAsync(user);
+                     await context.mongoAdminCollections.InsertOneAsync(admin);
 
-                    return user;
+                    return admin;
                 }
                 return null;
             }
@@ -85,14 +78,14 @@ namespace RepositoryLayer.Services
            
                 try
                 {
-                    var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
+                    var user = context.mongoAdminCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
                     if (user != null)
                     {
                         string Password = PwdEncryptDecryptService.DecryptPassword(user.Password);
 
                         if (password == Password)
                         {
-                        return  GenerateJwtToken(Email, user.UserId);
+                        return  GenerateJwtToken(Email, user.AdminId);
                         }
                         throw new Exception("Password is invalid");
                     }
@@ -164,7 +157,7 @@ namespace RepositoryLayer.Services
                 if (userPasswordModel.Password == userPasswordModel.ConfirmPassword)
                 {
                     user.Password = PwdEncryptDecryptService.EncryptPassword(userPasswordModel.Password);
-                    //var filter = Builders<BsonDocument>.Filter.Eq("UserId", user.UserId);
+                    //var filter = Builders<BsonDocument>.Filter.Eq("AdminId", user.AdminId);
                     //var update  = Builders<BsonDocument>.Update.Set("Password", user.Password);
                     context.mongoUserCollections.UpdateOneAsync(x => x.EmailId == email,
                         Builders<Users>.Update.Set(x => x.Password, user.Password));
@@ -209,7 +202,7 @@ namespace RepositoryLayer.Services
                     Subject = new ClaimsIdentity(new[]
                     {
                     new Claim(ClaimTypes.Email, email),
-                    new Claim("UserId", userId)
+                    new Claim("AdminId", userId)
                     }),
 
                     Expires = DateTime.UtcNow.AddMinutes(15),

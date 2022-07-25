@@ -16,15 +16,15 @@ namespace BookStore_WebApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : Controller
+    public class AdminController : Controller
     {
         IbookstoreContext context;
 
-        IUserBL userBL;
+        IAdminBL AdminBL;
 
-        public UserController(IUserBL userBL, IbookstoreContext context)
+        public AdminController(IAdminBL AdminBL, IbookstoreContext context)
         {
-            this.userBL = userBL;
+            this.AdminBL = AdminBL;
 
             this.context = context;
         }
@@ -37,7 +37,7 @@ namespace BookStore_WebApp.Controllers
             try
             {
 
-                var res = await this.userBL.AddUser(register);
+                var res = await this.AdminBL.AddAdmin(register);
                 if (res != null)
                 {
                     return this.Ok(new { success = true, message = "Registration Successfull" });
@@ -58,7 +58,7 @@ namespace BookStore_WebApp.Controllers
             try
             {
                 //s
-                var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
+                var user = context.mongoAdminCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
 
 
                 if (user == null)
@@ -68,13 +68,13 @@ namespace BookStore_WebApp.Controllers
 
                 string password = PwdEncryptDecryptService.EncryptPassword(Password);
 
-                var userdata1 = context.mongoUserCollections.Find<Users>(u => u.EmailId == Email && u.Password == password).FirstOrDefault();
+                var userdata1 = context.mongoAdminCollections.Find<Admin>(u => u.EmailId == Email && u.Password == password).FirstOrDefault();
                 if (userdata1 == null)
                 {
                     return this.BadRequest(new { success = false, message = "Password is Invalid" });
                 }
 
-                string token = this.userBL.LogInUser(Email, Password);
+                string token = this.AdminBL.LogInUser(Email, Password);
 
                 return this.Ok(new { success = true, message = "LogIn Successfull", data = token });
             }
@@ -88,7 +88,7 @@ namespace BookStore_WebApp.Controllers
         [HttpPost("Forgotpassword/{Email}")]
         public IActionResult ForgotPassword(String Email)
         {
-            var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
+            var user = context.mongoAdminCollections.AsQueryable().Where(u => u.EmailId == Email).FirstOrDefault();
             if (user == null)
             {
                 return this.BadRequest(new { success = false, message = "Email Not Found" });
@@ -100,7 +100,7 @@ namespace BookStore_WebApp.Controllers
             //{
             //    return this.BadRequest(new { success = false, message = "Password " });
             //}
-            bool result = this.userBL.ForgotPassword(Email);
+            bool result = this.AdminBL.ForgotPassword(Email);
             return this.Ok(new { success = true, message = "Tokne sented successfully to respective email Id ", data = result });
         }
 
@@ -112,13 +112,13 @@ namespace BookStore_WebApp.Controllers
             {
                 var userid = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase));
                 string UserID = userid.Value;
-                var result = context.mongoUserCollections.AsQueryable().Where(u => u.UserId == UserID).FirstOrDefault();
+                var result = context.mongoAdminCollections.AsQueryable().Where(u => u.AdminId == UserID).FirstOrDefault();
                 string Email = result.EmailId.ToString();
                 if (userPasswordModel.Password != userPasswordModel.ConfirmPassword)
                 {
                     return BadRequest(new { success = false, message = "Password and Confirm password must be same" });
                 }
-                bool res = this.userBL.ResetPassword(Email, userPasswordModel);
+                bool res = this.AdminBL.ResetPassword(Email, userPasswordModel);
                 if (res == false)
                 {
                     return this.BadRequest(new { sucess = false, message = "Enter the valid Email" });

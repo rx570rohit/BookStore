@@ -9,7 +9,7 @@ using System.Text;
 
 namespace RepositoryLayer.Services.Entity
 {
-    public class User
+    public class Users
     {
 
 

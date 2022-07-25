@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RepositoryLayer.Interfaces
+namespace BussinessLayer.Interfaces
 {
-    public interface IUserRL
+    public interface IAdminBL
     {
-    public Task<Users> AddUser(userPostModel userPostModel);
+        Task<Admin> AddAdmin(userPostModel userPostModel);
 
-    public string LogInUser(string Email, string Password);
+        public string LogInUser(string Email, string Password);
         bool ForgotPassword(string email);
         bool ResetPassword(string email, UserPasswordModel userPasswordModel);
     }

@@ -10,32 +10,32 @@ using System.Threading.Tasks;
 
 namespace BussinessLayer.Services
 {
-    public class UserBL : IUserBL
+    public class AdminBL : IAdminBL
     {
-        readonly IUserRL userRL;
-        public UserBL(IUserRL userRL)
+        readonly IAdminRL adminRL;
+        public AdminBL(IAdminRL adminRL)
         {
-            this.userRL = userRL;
+            this.adminRL = adminRL;
         }
     
-        public async Task<Users> AddUser(userPostModel userLoginModel)
+        public async Task<Admin> AddAdmin(userPostModel userLoginModel)
         {
-           return await this.userRL.AddUser(userLoginModel);
+           return await this.adminRL.AddAdmin(userLoginModel);
         }
 
         public bool ForgotPassword(string email)
         {
-            return this.userRL.ForgotPassword(email);
+            return this.adminRL.ForgotPassword(email);
         }
 
         public string LogInUser(string Email, string Password)
         {
-            return this.userRL.LogInUser(Email,Password);
+            return this.adminRL.LogInUser(Email,Password);
         }
 
         public bool ResetPassword(string email, UserPasswordModel userPasswordModel)
         {
-            return this.userRL.ResetPassword( email, userPasswordModel);
+            return this.adminRL.ResetPassword( email, userPasswordModel);
 
         }
     }
