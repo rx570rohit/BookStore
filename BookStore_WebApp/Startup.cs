@@ -160,7 +160,7 @@ namespace BookStore_WebApp
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
            
-            loggerFactory.AddFile("C:\\Users\\asus\\Desktop\\BookStoreAPI\\Log\\log.txt");
+            loggerFactory.AddFile("log.txt");
             
 
 
