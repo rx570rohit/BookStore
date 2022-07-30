@@ -11,10 +11,10 @@ namespace RepositoryLayer.Interfaces
     public interface IBookRl
     {    public Task<Books> AddBook(BookPostModel book);
        
-        public Task<bool> DeleteBook(string bookName, string AuthorName);
+        public Task<bool> DeleteBook(string bookId);
        
-        Task<Books> UpdateBook(BookPostModel book);
-        public IEnumerable<Books> GetAllBooks();
+        Task<Books> UpdateBook(string bookId,BookPostModel book);
+        Task<IEnumerable<Books>> GetAllBooks();
 
     }
 }

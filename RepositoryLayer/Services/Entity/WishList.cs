@@ -13,11 +13,9 @@ namespace RepositoryLayer.Services.Entity
         [BsonRepresentation(BsonType.ObjectId)]
         public string wishListID { get; set; }
        
-     //  [ForeignKey("BookModel")]
         public string BookId { get; set; }
         public virtual Books Book { get; set; }
         
-     //  [ForeignKey("RegisterModel")]
         public string userId { get; set; }
         public virtual Users user { get; set; }
     }

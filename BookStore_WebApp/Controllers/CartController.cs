@@ -21,17 +21,15 @@ namespace BookStore_WebApp.Controllers
         public CartController(ICartBl cart)
         {
             this.cartbl = cart;
-
         }
         [HttpPost("AddToCart")]
-       
-
         public async Task<IActionResult> AddToCart(CartPostModel cart)
         {
             try
             {
 
                 var userId = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase)).Value;
+                
 
                 var resp = await this.cartbl.AddToCart(userId,cart);
 
@@ -82,23 +80,24 @@ namespace BookStore_WebApp.Controllers
         }
 
         [HttpPut("UpdateCartQuantity")]
-        public async Task<IActionResult> UpdateCartQuantity( string bookName ,string authorName ,int quantity)
+        public async Task<IActionResult> UpdateCartQuantity( string bookId,string cartId,int quantity)
         {
             try
             {
                 var userId = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase)).Value;
                
 
-                var resp = await this.cartbl.UpdateCartQuantity(userId,bookName,authorName,quantity);
-                if (resp != null)
-                {
+                var resp = await this.cartbl.UpdateCartQuantity(userId,bookId,cartId,quantity);
 
-                    return this.Ok(new  { Status = true, Message = " Data Is UpDate ", Data = resp });
+                if (resp != false)
+                {
+                    
+                    return this.Ok(new  { Status = true, Message = " Data iIs UpDate ", Data = resp });
                 }
                 else
                 {
 
-                    return this.BadRequest(new { Status = false, Message = "Record not Found" });
+                    return this.BadRequest(new { Status = false, Message = "Record not Found or Quantity you entered is greater then available quantity" });
                 }
             }
             catch (Exception e)

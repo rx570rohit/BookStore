@@ -25,7 +25,7 @@ namespace RepositoryLayer.Services
             this.context = context;
             this.env= env;
         }
-
+        
         public async Task<Books> AddBook(BookPostModel book)
         {
             try
@@ -60,17 +60,19 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public async Task<bool> DeleteBook(string bookName, string authorName)
+        public async Task<bool> DeleteBook(string bookId)
         {
             try
             {
-                var v = await context.mongoBookCollections.AsQueryable().Where(x => x.AuthorName == authorName && x.BookName == bookName).FirstOrDefaultAsync();
-                string bookid = v.BookId;
+                //var v = await context.mongoBookCollections.AsQueryable().Where(x => x.BookId==bookId).FirstOrDefaultAsync();
+                //string bookid = v.BookId;
+               
 
-
-                var ifExists = await context.mongoBookCollections.FindOneAndDeleteAsync(x => x.BookId == bookid);
-
+                var ifExists = await context.mongoBookCollections.FindOneAndDeleteAsync(x => x.BookId == bookId);
+                if(ifExists!=null)
                 return true;
+
+                 return false;
 
 
             }
@@ -82,11 +84,11 @@ namespace RepositoryLayer.Services
         }
 
        
-            public async Task<Books> UpdateBook(BookPostModel book)
+            public async Task<Books> UpdateBook(string bookId, BookPostModel book)
             {
                 try
                 {
-                var bookInfo = await context.mongoBookCollections.AsQueryable().Where(x => x.AuthorName == book.AuthorName && x.BookName == book.BookName).SingleOrDefaultAsync();
+                var bookInfo = await context.mongoBookCollections.AsQueryable().Where(x => x.BookId==bookId).SingleOrDefaultAsync();
                 var BookID = bookInfo.BookId;
 
 
@@ -104,24 +106,24 @@ namespace RepositoryLayer.Services
                             .Set(x => x.DiscountPrice, book.DiscountPrice));
                         return bookInfo;
                     }
-                    else
-                    {
-                    Books Books = new Books()
-                    {
-                        AuthorName = book.AuthorName,
-                        BookName = book.BookName,
-                        BookImage = book.BookImage,
-                        BookQuantity = book.BookQuantity,
-                        ActualPrice = book.ActualPrice,
-                        Description = book.Description,
-                        DiscountPrice = book.DiscountPrice,
-                        Rating = book.Rating,
-                        totalRating = book.totalRating
-                    };
-                    await context.mongoBookCollections.InsertOneAsync(Books);
-                    return Books;
+                    //else
+                    //{
+                    //Books Books = new Books()
+                    //{
+                    //    AuthorName = book.AuthorName,
+                    //    BookName = book.BookName,
+                    //    BookImage = book.BookImage,
+                    //    BookQuantity = book.BookQuantity,
+                    //    ActualPrice = book.ActualPrice,
+                    //    Description = book.Description,
+                    //    DiscountPrice = book.DiscountPrice,
+                    //    Rating = book.Rating,
+                    //    totalRating = book.totalRating
+                    //};
+                    //await context.mongoBookCollections.InsertOneAsync(Books);
+                    return null;
 
-                    }
+                    
                 }
                 catch (ArgumentNullException e)
                 {
@@ -132,11 +134,10 @@ namespace RepositoryLayer.Services
 
 
 
-        [Authorize]
-        public IEnumerable<Books> GetAllBooks()
+        public async Task<IEnumerable<Books>> GetAllBooks()
         {
            var v = context.mongoBookCollections.Find(FilterDefinition<Books>.Empty);
-            return v.ToList();
+            return await v.ToListAsync();
 
         }
 

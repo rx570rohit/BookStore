@@ -104,7 +104,7 @@ namespace RepositoryLayer.Services
 
             try
             {
-                var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == email).FirstOrDefault();
+                var user = context.mongoAdminCollections.AsQueryable().Where(u => u.EmailId == email).FirstOrDefault();
                 if (user == null)
                 {
                     return false;
@@ -124,7 +124,7 @@ namespace RepositoryLayer.Services
 
                     Message MyMessage = new Message();
                     MyMessage.Formatter = new BinaryMessageFormatter();
-                    MyMessage.Body = GenerateJwtToken(email, user.UserId);
+                    MyMessage.Body = GenerateJwtToken(email, user.AdminId);
                     MyMessage.Label = "Forget Password Email";
                     queue.Send(MyMessage);
 
@@ -148,7 +148,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var user = context.mongoUserCollections.AsQueryable().Where(u => u.EmailId == email).FirstOrDefault();
+                var user = context.mongoAdminCollections.AsQueryable().Where(u => u.EmailId == email).FirstOrDefault();
 
                 if (user == null)
                 {
@@ -159,8 +159,8 @@ namespace RepositoryLayer.Services
                     user.Password = PwdEncryptDecryptService.EncryptPassword(userPasswordModel.Password);
                     //var filter = Builders<BsonDocument>.Filter.Eq("AdminId", user.AdminId);
                     //var update  = Builders<BsonDocument>.Update.Set("Password", user.Password);
-                    context.mongoUserCollections.UpdateOneAsync(x => x.EmailId == email,
-                        Builders<Users>.Update.Set(x => x.Password, user.Password));
+                    context.mongoAdminCollections.UpdateOneAsync(x => x.EmailId == email,
+                        Builders<Admin>.Update.Set(x => x.Password, user.Password));
                 }
 
                 return true;
@@ -202,7 +202,8 @@ namespace RepositoryLayer.Services
                     Subject = new ClaimsIdentity(new[]
                     {
                     new Claim(ClaimTypes.Email, email),
-                    new Claim("AdminId", userId)
+                    new Claim("AdminId", userId),
+                    new Claim(ClaimTypes.Role,"Admin")
                     }),
 
                     Expires = DateTime.UtcNow.AddMinutes(15),
@@ -225,7 +226,9 @@ namespace RepositoryLayer.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Email,Email)
+                    new Claim(ClaimTypes.Email,Email),
+                    new Claim(ClaimTypes.Role,"Admin")
+
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

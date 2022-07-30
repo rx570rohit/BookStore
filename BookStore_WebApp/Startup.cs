@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -33,6 +34,18 @@ namespace BookStore_WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+
+                options.Configuration = "127.0.0.1:6379";
+                // options.Configuration = "localhost:6379";
+            });
+
+            var cacheKey = Configuration.GetSection("redis").GetSection("cacheKey").Value;
+            services.AddMemoryCache();
+
             services.Configure<DBSetting>(
                 this.Configuration.GetSection(nameof(DBSetting)));
 
@@ -56,6 +69,9 @@ namespace BookStore_WebApp
             services.AddTransient<IOrderBl, OrderBl>();
             services.AddTransient<IOrderRl, OrderRl>();
 
+            services.AddTransient<IFeedbackBl, FeedbackBl>();
+            services.AddTransient<IFeedbackRl, FeedbackRl>();
+
 
 
             services.AddTransient<IAddressBl, AddressBl>();
@@ -78,8 +94,22 @@ namespace BookStore_WebApp
             services.AddTransient<IUserRL, UserRL>();
 
             services.AddControllers();
+
+            //Role based
+            services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy("Admin",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole("Admin");
+                    });
+
+            });
+
             services.AddAuthentication(x =>
             {
+                
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
@@ -127,8 +157,12 @@ namespace BookStore_WebApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+           
+            loggerFactory.AddFile("log.txt");
+            
+
 
             if (env.IsDevelopment())
             {
@@ -141,7 +175,7 @@ namespace BookStore_WebApp
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "FundooNotes");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore");
             });
 
             app.UseAuthentication();
@@ -158,16 +192,16 @@ namespace BookStore_WebApp
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
             //app.UseEndpoints(endpoints =>
             //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{id?}");
+            //    endpoints.MapControllers();
             //});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}");
+            });
         }
     }
 }

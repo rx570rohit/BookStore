@@ -7,9 +7,9 @@ namespace DatabaseLayer.Order
     public class OrderPostModel
     {
 
-        public string CartId { get; set; }
+        public string bookId { get; set; }
+      //  public string CartId { get; set; }
 
-        public string userId { get; set; }
 
         public string addressID { get; set; }
 

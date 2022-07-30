@@ -21,7 +21,7 @@ namespace RepositoryLayer.Services.Entity
         public int ActualPrice { get; set; }
         public string Description { get; set; }
         public string BookImage { get; set; }
-        public string BookQuantity { get; set; }
+        public int BookQuantity { get; set; }
 
         
     }

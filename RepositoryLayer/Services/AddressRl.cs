@@ -60,15 +60,14 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public async Task<Addresses> UpdateAddress(string userId,AddressPostModel addressPostModel)
+        public async Task<Addresses> UpdateAddress(string userId,string addressId,AddressPostModel addressPostModel)
         {
             try
             {
                 //Builders<Carts>.Update.Set(x => x.Quantity, quantity));
                 var user = await context.mongoUserCollections.AsQueryable().Where(x => x.UserId == userId).SingleOrDefaultAsync();
 
-              var x =   await context.mongoAddressCollections.FindOneAndUpdateAsync(x=>x.fullAddress==addressPostModel.fullAddress &&
-                x.pinCode==addressPostModel.pinCode,
+                var x =   await context.mongoAddressCollections.FindOneAndUpdateAsync(x=>x.addressID==addressId,
                 Builders<Addresses>.Update.Set(x=>x.fullAddress,addressPostModel.fullAddress)
                 .Set(x=>x.pinCode, addressPostModel.pinCode)
                 .Set(x=>x.state ,addressPostModel.state)
@@ -87,10 +86,11 @@ namespace RepositoryLayer.Services
                 throw e;
             }
         }
-        public async Task<bool> RemoveAddress(string userId, AddressPostModel addressPostModel)
+        public async Task<bool> RemoveAddress(string userId, string addressId)
         {
-            var x = await context.mongoAddressCollections.FindOneAndDeleteAsync(x=>x.userId==userId 
-            && x.fullAddress==addressPostModel.fullAddress && x.pinCode==addressPostModel.pinCode);
+            //  var x = await context.mongoAddressCollections.FindOneAndDeleteAsync(x=>x.userId==userId 
+            //&& x.fullAddress==addressPostModel.fullAddress && x.pinCode==addressPostModel.pinCode);
+            var x = await context.mongoAddressCollections.FindOneAndDeleteAsync(x => x.addressID == addressId);
             if (x != null)
             {
                return true;

@@ -21,15 +21,20 @@ namespace RepositoryLayer.Services
         {
             var userAddress = await context.mongoAddressCollections.AsQueryable().Where(x => x.addressID== order.addressID).SingleOrDefaultAsync();
             
-            var userCart = await context.mongoCartCollections.AsQueryable().Where(x => x.cartId == order.CartId).SingleOrDefaultAsync();
+         //   var userCart = await context.mongoCartCollections.AsQueryable().Where(x => x.cartId == order.CartId).SingleOrDefaultAsync();
+
+            var book = await context.mongoBookCollections.AsQueryable().Where(x => x.BookId == order.bookId).FirstOrDefaultAsync(); 
+
+           
             
-            if (userAddress != null && userCart != null)
+            
+            if (userAddress != null /* && userCart != null */)
             {
                 Orders orders = new Orders()
                 {
                     userID = userId,    
-                 
-                    Cart = userCart,
+                    books=book,
+                 //   Cart = userCart,
                     Address = userAddress,
                     Price = order.Price,
                     Quantity = order.Quantity,

@@ -11,7 +11,7 @@ namespace BussinessLayer.Interfaces
     {
         Task<Carts> AddToCart(string UserId, CartPostModel cart);
         Task<bool> RemoveCart(string cartId);
-        Task<Carts> UpdateCartQuantity(string userId, string bookName, string authorName, int quantity);
+        Task<bool> UpdateCartQuantity(string userId,string bookId, string cartId, int quantity);
         IEnumerable<Carts> GetAllCart(string userid);
     }
 }

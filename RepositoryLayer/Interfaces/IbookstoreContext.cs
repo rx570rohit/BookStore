@@ -23,6 +23,9 @@ namespace RepositoryLayer.Interfaces
 
         public IMongoCollection<Admin> mongoAdminCollections { get; }
 
+        public IMongoCollection<Feedback> mongoFeedbackCollections { get; }
+
+
 
 
 
