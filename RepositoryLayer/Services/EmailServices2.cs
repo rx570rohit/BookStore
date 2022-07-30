@@ -22,6 +22,7 @@ namespace RepositoryLayer.Services
                 msgObj.From = new MailAddress("soni1rohit570@gmail.com");
                 msgObj.Subject = "Welcome To Rock BookStore";
                 msgObj.Body = $"www.BookStore.com/Order Information /{token}";
+
                 smtpClient.Send(msgObj);
             }
         }
