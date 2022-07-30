@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPublishable>True</IsPublishable>
   </PropertyGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/appsscript.json" /></VisualStudio></ProjectExtensions>
@@ -14,6 +15,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.27" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.27" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="MongoDB.Bson" Version="2.16.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.16.1" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.1-dev-00077" />

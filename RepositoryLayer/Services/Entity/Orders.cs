@@ -16,13 +16,15 @@ namespace RepositoryLayer.Services.Entity
 
         public string userID { get; set; }
 
-
-        public virtual Carts Cart { get; set; } 
+        public virtual Books books { get; set; }    
+      //  public virtual Carts Cart { get; set; } 
         public string addressID { get; set; }
         public virtual Addresses Address { get; set; }
 
         public int Quantity { get; set; }
         public int Price { get; set; }
+        
+        //date
 
         // public int DiscountPrice { get; set; }
         // public int ActualPrice { get; set; }

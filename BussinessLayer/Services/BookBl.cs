@@ -19,9 +19,9 @@ namespace BussinessLayer.Services
             this.bookrl = bookrl;   
         }
 
-        public Task<Books> UpdateBook(BookPostModel book)
+        public Task<Books> UpdateBook(string bookId,BookPostModel book)
         {
-            return bookrl.UpdateBook(book);
+            return bookrl.UpdateBook(bookId,book);
 
         }
 
@@ -32,9 +32,9 @@ namespace BussinessLayer.Services
         }
 
 
-        Task<bool> IBookBl.DeleteBook(string bookName, string AuthorName)
+        Task<bool> IBookBl.DeleteBook(string bookId)
         {
-            return bookrl.DeleteBook(bookName,AuthorName);
+            return bookrl.DeleteBook(bookId);
 
         }
         public Task<IEnumerable<Books>> GetAllBooks()

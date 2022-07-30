@@ -54,7 +54,7 @@ namespace BookStore_WebApp.Controllers
             _logger.LogWarning("This is a warning log");
 
 
-            _logger.LogError("This is an error log");
+          
 
             _logger.LogCritical("This is a critical log");
 
@@ -64,6 +64,7 @@ namespace BookStore_WebApp.Controllers
 
             try
             {
+                
 
                 var resp = await this.bookbl.AddBook(book);  
                 if (resp != null)
@@ -88,12 +89,12 @@ namespace BookStore_WebApp.Controllers
         [Authorize("Admin")]
         [HttpPut("UpdateBook")]
       
-        public async Task<IActionResult> UpdateBook( BookPostModel book)
+        public async Task<IActionResult> UpdateBook( string bookId,BookPostModel book)
         {
             try
             {
 
-                var resp = await bookbl.UpdateBook(book);
+                var resp = await bookbl.UpdateBook(bookId,book);
                 if (resp != null)
                 {
 
@@ -173,12 +174,12 @@ namespace BookStore_WebApp.Controllers
         [Authorize("Admin")]
         [HttpDelete("DeleteBook")]
       
-        public async Task<IActionResult> DeleteBook(string bookName,string AuthorName)
+        public async Task<IActionResult> DeleteBook(string bookId)
         {
             try
             {
 
-                bool resp = await this.bookbl.DeleteBook(bookName,AuthorName);
+                bool resp = await this.bookbl.DeleteBook(bookId);
                 if (resp != false)
                 {
 

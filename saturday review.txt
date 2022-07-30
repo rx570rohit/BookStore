@@ -1,0 +1,76 @@
+order book
+
+{
+  "bookId": "62da4dec98783f2d0e5b3d3f",
+  "addressID": "62e3bf931c133ac9c52fe485",
+  "quantity": 5,
+  "price": 1000
+}
+
+bookId 1 = 62da4dec98783f2d0e5b3d3f  
+bookId 2 = 62da4df698783f2d0e5b3d40
+
+bookId 3  = 62e3aa6a433795dae6f13058
+
+AddressId 
+
+sonirohit570@gmail
+ addId 1 = 62e3bf931c133ac9c52fe485
+
+ addId 2 = 62e4006958045a772ea37c03
+
+ addId 3 = 62e4016258045a772ea37c04
+
+soni1rohit570@gmail.com
+
+add 1 : 62e417fb897e44f8717b6a80
+
+add 2:  62e4180a897e44f8717b6a81
+
+Add Address
+
+{
+  "fullAddress": "Devine Park bhopal",
+  "city": "Bhopal",
+  "state": "M.P",
+  "pinCode": 462001
+}
+
+{
+  "fullAddress": "chota bazar datia",
+  "city": "Datia",
+  "state": "M.P",
+  "pinCode": 474001
+}
+
+
+order Book
+
+{
+  "bookId": "62e3aa6a433795dae6f13058",
+  "addressID": "62e4180a897e44f8717b6a81",
+  "quantity": 7,
+  "price": 900
+}
+
+{
+  "bookId": "62da4df698783f2d0e5b3d40",
+  "addressID": "62e4180a897e44f8717b6a81",
+  "quantity": 2,
+  "price": 1500
+}
+
+sonirohit570@gmail.com
+{
+  "bookId": "62e3aa6a433795dae6f13058",
+  "addressID": "62e3bf931c133ac9c52fe485",
+  "quantity": 2,
+  "price": 1500
+}
+
+{
+  "bookId":    "62da4df698783f2d0e5b3d40",
+  "addressID": "62e4006958045a772ea37c03",
+  "quantity": 2,
+  "price": 1500
+}

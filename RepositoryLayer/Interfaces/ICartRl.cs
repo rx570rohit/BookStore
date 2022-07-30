@@ -13,6 +13,6 @@ namespace RepositoryLayer.Interfaces
          Task<bool> RemoveCart(string cartId);
          IEnumerable<Carts> GetAllCart(string userid);
 
-         Task<Carts> UpdateCartQuantity(string userId, string bookName, string authorName, int quantity);
+         Task<bool> UpdateCartQuantity(string userId,string bookId, string cartId, int quantity);
     }
 }

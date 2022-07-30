@@ -175,7 +175,7 @@ namespace BookStore_WebApp
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "FundooNotes");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore");
             });
 
             app.UseAuthentication();
@@ -192,16 +192,16 @@ namespace BookStore_WebApp
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
             //app.UseEndpoints(endpoints =>
             //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{id?}");
+            //    endpoints.MapControllers();
             //});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}");
+            });
         }
     }
 }

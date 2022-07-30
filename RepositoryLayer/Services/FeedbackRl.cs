@@ -24,17 +24,19 @@ namespace RepositoryLayer.Services
                 var User = await context.mongoUserCollections.AsQueryable().Where(x => x.UserId == userId).FirstOrDefaultAsync();
                 Feedback feedback = new Feedback()
                 {
-                    FisrtName =User.FisrtName,
-                    LastName = User.LastName,
-                    AuthorName = Book.AuthorName,
-                    BookImage = Book.BookImage,
-                    BookName =  Book.BookName,
-                    Created = DateTime.Now,
-                    Description = Book.Description,
+                    //FisrtName = User.FisrtName,
+                    //LastName = User.LastName,
+                    //AuthorName = Book.AuthorName,
+                    //BookImage = Book.BookImage,
+                    //BookName = Book.BookName,
+                    //Created = DateTime.Now,
+                    //Description = Book.Description,
                     Rating = Book.Rating,
-                    totalRating = Book.totalRating,
+                    book = Book,
+                    user = User,
+                    //totalRating = Book.totalRating,
                     Comment = feedbackPostModel.Comment,
-                    BookId = feedbackPostModel.BookId,
+                    //BookId = feedbackPostModel.BookId,
                 };
                 await context.mongoFeedbackCollections.InsertOneAsync(feedback);
                 return feedback;

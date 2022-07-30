@@ -2,7 +2,6 @@
 using DataBaseLayer.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using RepositoryLayer.Interfaces;
@@ -32,8 +31,9 @@ namespace BookStore_WebApp.Controllers
         [HttpPost]
         [Route("register")]
 
-        public async Task<IActionResult> Register(userPostModel register)
+        public async Task<ActionResult> Register(userPostModel register)
         {
+            
             try
             {
 
@@ -101,6 +101,7 @@ namespace BookStore_WebApp.Controllers
             //    return this.BadRequest(new { success = false, message = "Password " });
             //}
             bool result = this.AdminBL.ForgotPassword(Email);
+
             return this.Ok(new { success = true, message = "Tokne sented successfully to respective email Id ", data = result });
         }
 
@@ -110,7 +111,7 @@ namespace BookStore_WebApp.Controllers
         {
             try
             {
-                var userid = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase));
+                var userid = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("AdminId", StringComparison.InvariantCultureIgnoreCase));
                 string UserID = userid.Value;
                 var result = context.mongoAdminCollections.AsQueryable().Where(u => u.AdminId == UserID).FirstOrDefault();
                 string Email = result.EmailId.ToString();

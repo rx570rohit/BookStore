@@ -106,22 +106,25 @@ namespace RepositoryLayer.Services
             return false;
         }
 
-        public async Task<Carts> UpdateCartQuantity(string userId,string bookName,string authorName ,int quantity)
+        public async Task<bool> UpdateCartQuantity(string userId,string bookId, string cartId, int quantity)
         {
             try
             {
-                var cartInfo = await context.mongoCartCollections.AsQueryable().Where( x=>x.book.BookName==bookName && x.book.AuthorName==authorName && x.userId==userId).FirstOrDefaultAsync();
-                var cartID = cartInfo.cartId;
-
-
-                if (cartID != null)
+                //var cartInfo = await context.mongoCartCollections.AsQueryable().Where( x=>x.book.BookName==bookName && x.book.AuthorName==authorName && x.userId==userId).FirstOrDefaultAsync();
+                //var cartID = cartInfo.cartId;
+                var book = await context.mongoBookCollections.AsQueryable().Where(x => x.BookId == bookId).FirstOrDefaultAsync();
+                int bookQuantity = book.BookQuantity;
+                if (quantity <= bookQuantity)
                 {
-                    await context.mongoCartCollections.UpdateOneAsync(x => x.cartId == cartID,
-                        Builders<Carts>.Update.Set(x => x.Quantity, quantity));
-
-                    return cartInfo;
+                    var res = await context.mongoCartCollections.UpdateOneAsync(x => x.cartId == cartId && x.BookId == bookId,
+                          Builders<Carts>.Update.Set(x => x.Quantity, quantity));
+                    if (res != null)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
-                return null;
+                return false;
             }
             catch (Exception)
             {

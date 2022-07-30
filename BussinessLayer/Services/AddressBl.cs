@@ -21,18 +21,18 @@ namespace BussinessLayer.Services
         {
             return addressRl.AddAddress(userId,addressPostModel);      
         }
-        public Task<Addresses> UpdateAddress(string userId, AddressPostModel addressPostModel)
+        public Task<Addresses> UpdateAddress(string userId,string addressId, AddressPostModel addressPostModel)
         {
-            return addressRl.UpdateAddress(userId,addressPostModel);
+            return addressRl.UpdateAddress(userId, addressId, addressPostModel);
         }
         public Task<IEnumerable> GetAddresses(string userId)
         {
             return addressRl.GetAddresses(userId);
         }
 
-        public Task<bool> RemoveAddress(string userId, AddressPostModel addressPostModel)
+        public Task<bool> RemoveAddress(string userId, string addressId)
         {
-            return addressRl.RemoveAddress(userId,addressPostModel);   
+            return addressRl.RemoveAddress(userId, addressId);   
         }
 
         

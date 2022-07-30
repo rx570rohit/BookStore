@@ -31,9 +31,9 @@ namespace BussinessLayer.Services
             return cartrl.RemoveCart( cartId);
         }
 
-        public Task<Carts> UpdateCartQuantity(string userId, string bookName, string authorName, int quantity)
+        public Task<bool> UpdateCartQuantity(string userId, string bookId,string cartId, int quantity)
         {
-            return cartrl.UpdateCartQuantity(userId, bookName, authorName, quantity);
+            return cartrl.UpdateCartQuantity(userId, bookId,cartId, quantity);
         }
     }
 }

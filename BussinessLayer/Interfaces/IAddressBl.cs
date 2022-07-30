@@ -11,9 +11,9 @@ namespace BussinessLayer.Interfaces
     {
         Task<Addresses> AddAddress(string userId, AddressPostModel addressPostModel);
 
-        Task<Addresses> UpdateAddress(string userId, AddressPostModel addressPostModel);
+        Task<Addresses> UpdateAddress(string userId,string addressId, AddressPostModel addressPostModel);
 
-        Task<bool> RemoveAddress(string userId,AddressPostModel addressPostModel);
+        Task<bool> RemoveAddress(string userId,string addressId);
 
         Task<IEnumerable> GetAddresses(string userId);
 

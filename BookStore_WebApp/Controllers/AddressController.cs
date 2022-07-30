@@ -58,13 +58,13 @@ namespace BookStore_WebApp.Controllers
 
         [HttpPut("UpdateAddress")]
 
-        public async Task<IActionResult> UpdateAddress(AddressPostModel addressPostModel)
+        public async Task<IActionResult> UpdateAddress(string addressId, AddressPostModel addressPostModel)
         {
             try
             {
                 var userId = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase)).Value;
 
-                var resp = await addressbl.UpdateAddress(userId,addressPostModel);
+                var resp = await addressbl.UpdateAddress(userId,addressId,addressPostModel);
                 if (resp != null)
                 {
 
@@ -106,12 +106,12 @@ namespace BookStore_WebApp.Controllers
 
         [HttpDelete("RemoveAddress")]
 
-        public async Task<IActionResult> RemoveAddress(AddressPostModel addressPostModel)
+        public async Task<IActionResult> RemoveAddress(string addressId)
         {
             try
             {
                 var userId = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("UserId", StringComparison.InvariantCultureIgnoreCase)).Value;
-                bool resp = await this.addressbl.RemoveAddress(userId,addressPostModel);
+                bool resp = await this.addressbl.RemoveAddress(userId,addressId);
                 if (resp != false)
                 {
 
